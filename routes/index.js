@@ -14,11 +14,11 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/sparql', function(req, res, next) {
-    var results = wikitree.init(req.query,function (err,results) {
-      if (err){
-        //if there is error, send error to client side
-        return res.status(500).jsonp({error: err});
-      }
+    var results = wikitree.init(req.query,function (results) {
+      // if (err){
+      //   //if there is error, send error to client side
+      //   return res.status(500).jsonp({error: err});
+      // }
       res.jsonp(results);
     });
 
