@@ -1,7 +1,6 @@
 {
-    "version": 2,
-    "name": "wikidata-tree",
-    "alias": "wikitree.now.sh",
+    "version": 1,
+    "name": "wikitable-nodejs",
     "builds": [
     {
         "src": "app.js",
