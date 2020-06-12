@@ -11,14 +11,7 @@ var dataCache = new NodeCache();
 // var config = require('../controllers/tables');
 
 exports.init = function (request, callback) {
-    //from the debugging, it's seems that the data is append to the rows, so we need to initialized it for every request
-    //Init container data
-    rows =[];
-    labelIds = [];
-    processNode.ownValue = [];
-    processNode.nodeImages = [];
-    processNode.birthAndDeathPlace = [];
-    processNode.result.root = null;
+
     if(!request.page){
         callback('no page req');
     }
