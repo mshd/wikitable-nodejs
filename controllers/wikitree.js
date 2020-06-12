@@ -7,11 +7,8 @@ const NodeCache = require('node-cache');
 // var cache = require('memory-cache');
 // const wikidataLang = require('../public/js/wikidataLang');
 var wikidataController = require('../controllers/wikidata');
-var processNode = require('../controllers/processNode');
-var treeType;
-var stackChildren = true;
 var dataCache = new NodeCache();
-var config = require('../controllers/tables');
+// var config = require('../controllers/tables');
 
 exports.init = function (request, callback) {
     //from the debugging, it's seems that the data is append to the rows, so we need to initialized it for every request
