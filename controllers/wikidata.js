@@ -29,7 +29,7 @@ exports.wikidataApi = function(para, callback) {
     }else{
         //https://stackoverflow.com/questions/31710768/how-can-i-fetch-an-array-of-urls-with-promise-all
         //map all requests and emerge the entities
-        await Promise.all(urls.map(u=>fetch(u))).then(responses =>
+        Promise.all(urls.map(u=>fetch(u))).then(responses =>
             Promise.all(responses.map(res => {
                 // console.log(res.);
                 return res.json();
