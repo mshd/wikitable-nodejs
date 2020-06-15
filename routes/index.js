@@ -25,8 +25,8 @@ router.get('/sparql', function(req, res, next) {
 });
 
 
-router.get('/sparql', function(req, res, next) {
-    var results = wikitree.init(req.query,function (err,results) {
+router.get('/api/:page', function(req, res, next) {
+    var results = wikitree.apiMain(req.params,function (results,err) {
         if (err){
             //if there is error, send error to client side
             return res.status(500).jsonp({error: err});

@@ -9,6 +9,33 @@ const NodeCache = require('node-cache');
 var wikidataController = require('../controllers/wikidata');
 var dataCache = new NodeCache();
 var config = require('../controllers/tables');
+var processTable = require('./processTable');
+
+function f() {
+    
+}
+
+
+function apiMain(request,callback){
+    // console.log(request);
+    var requestedTable = config.page[
+        request.page
+        // 'universities'
+        ];
+    var sparql = requestedTable.query;
+    wikidataController.wikidataSparqlGetItems(sparql + " LIMIT 10",function (result) {
+        // console.log(result);
+        // callback(result);
+        // return;
+        var table = processTable.process(result,config.page[request.page]);
+
+        callback(table);
+
+    })
+
+}
+exports.apiMain = apiMain;
+
 
 exports.init = function (request, callback) {
 
@@ -49,20 +76,6 @@ SELECT ?item ?itemLabel ?ticker WHERE {
     });
     //
     //
-    // wikidataController.wikidataSparqlGetItems(sparql,function (result) {
-    //     // callback(null,result);
-    //     console.log(result);
-    //     for(var entityId in result.entities){
-    //         const claims = wbk.simplify.claims(result.entities[entityId], { keepQualifiers: true });
-    //         table[entityId] = {};
-    //         requestedTable.header.forEach(function (headItem) {
-    //             table[entityId][headItem.name] = "test";
-    //         });
-    //
-    //     }
-    //     callback(null,table);
-    //
-    //     // callback(null,result);
-    // })
+
 
 };

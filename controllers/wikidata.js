@@ -6,6 +6,7 @@ exports.wikidataApi = function(para, callback) {
         callback(null,null);
         return;
     }
+    console.log(para);
     const urls = wbk.getManyEntities({
         ids: para.ids,
         languages: para.lang || [ 'en', 'fr', 'de' ], // returns all languages if not specified
@@ -54,7 +55,7 @@ exports.wikidataSparql = function(para, callback) {
     // callback(url);
     fetch(url)
         .then(response => response.json())
-        .then(results => wbk.simplify.sparqlResults(results))
+        .then(results => wbk.simplify.sparqlResults(results, { minimize: false }))
         .then(entities => {
             callback(entities);
         });
@@ -62,7 +63,12 @@ exports.wikidataSparql = function(para, callback) {
 
 exports.wikidataSparqlGetItems  = function(para, callback) {
     exports.wikidataSparql(para,function (items) {
-        const ids = items.map(entry => entry.item.value);
+        console.log(items);
+        if(items[0].item.value){
+            var ids = items.map(entry => entry.item.value);
+        }else {
+            var ids = items.map(entry => entry.item);
+        }
         exports.wikidataApi({
             ids: ids,
         },function(err,result) {
