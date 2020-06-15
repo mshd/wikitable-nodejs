@@ -1,5 +1,6 @@
 
 const wbk = require('wikidata-sdk');
+var wikidataController = require('../controllers/wikidata');
 
 exports.requestedTable = null;
 exports.labelsIds = [];
@@ -27,16 +28,20 @@ exports.process = function(result,requestedTable){
         table[entityId] = processRow(claims);
     }
     console.log(exports.labelsIds);
+    fetchLabels();
     return table;
 
 };
 
 function fetchLabels() {
     var data = wikidataController.wikidataApi({
-        ids: Array.from(new Set(processNode.labelIds)),//make labelIds unique https://futurestud.io/tutorials/node-js-get-an-array-with-unique-values-delete-duplicates
-        props:
-    }
-
+        ids: Array.from(new Set(exports.labelsIds)),
+        props: "labels",
+        lang: "en",
+    }, function (result) {
+        console.log(result);
+    });
+}
 function processRow(claims) {
     var row = {};
     exports.requestedTable.header.forEach(function (headItem) {
