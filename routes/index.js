@@ -13,6 +13,12 @@ router.get('/', function(req, res, next) {
         res.render('index', { title: 'Express' });
 });
 
+
+router.get('/about', function(req, res, next) {
+    res.jsonp({page:"about",error:null});
+});
+
+
 router.get('/sparql', function(req, res, next) {
     var results = wikitree.init(req.query,function (results) {
       // if (err){
