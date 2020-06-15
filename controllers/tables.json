@@ -2552,16 +2552,19 @@
         },
         {
           "property": "P131",
+          "apiName": "location",
           "visible": false
         },
         {
           "property": "P17",
+          "apiName": "country",
           "valueconstraint": {
             "P576": false
           }
         },
         {
           "property": "P571",
+          "apiName": "inception",
           "options": {
             "date": "year"
           }
