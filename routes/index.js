@@ -5,6 +5,7 @@ var request = require('request');
 const wbk = require('wikidata-sdk');
 const fetch = require('node-fetch');
 const wikitree = require('../controllers/wikitree');
+const db = require('../database/db');
 
 var wikidataController = require('../controllers/wikidata');
 
@@ -20,16 +21,27 @@ router.get('/about', function(req, res, next) {
 
 
 router.get('/sparql', function(req, res, next) {
-    var results = wikitree.init(req.query,function (results) {
-      // if (err){
-      //   //if there is error, send error to client side
-      //   return res.status(500).jsonp({error: err});
-      // }
-      res.jsonp(results);
+    let data = req.query;    
+
+    db.getData(req.query, (result) => {
+        if(result == null){
+            console.log("Data not found in cache.")
+            wikitree.init(req.query, function(results) {
+                data.sparql = results.sparql; 
+                data.results = results.results;                  
+
+                db.addData(data);                
+                res.jsonp(results);     
+            });
+        }
+        else {            
+            console.log("Data found in cache.")
+            delete result._id;
+            delete result.page;
+            res.jsonp(result)
+        }
     });
-
 });
-
 
 router.get('/api/:page', function(req, res, next) {
     var results = wikitree.apiMain(req.params,function (results,err) {
@@ -67,4 +79,18 @@ router.get('/test/manyentities', function(req, res, next) {
         res.json(Object.keys(labels).length);
     });
 });
+
+/* Clean database */
+router.get('/cache-clear', function(req, res, next){    
+    db.clear();
+    res.status(200).send("Cleaned Cache Memory!");
+});
+
+/* Clean database */
+router.get('/cache-count', function(req, res, next){    
+    db.count((count) => {
+        res.status(200).send("Record Count in Cache: " + count);
+    });    
+});
+
 module.exports = router;
